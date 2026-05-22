@@ -1,5 +1,5 @@
 ### EX5 Information Retrieval Using Boolean Model in Python
-### DATE: 
+### DATE: 22/05/2026
 ### AIM: To implement Information Retrieval Using Boolean Model in Python.
 ### Description:
 <div align = "justify">
@@ -23,12 +23,14 @@ The Boolean model in Information Retrieval (IR) is a fundamental model used for 
 
 ### Program:
 
-    import numpy as np
-    import pandas as pd
-    class BooleanRetrieval:
-        def __init__(self):
-            self.index = {}
-            self.documents_matrix = None
+```
+import numpy as np
+import pandas as pd
+
+class BooleanRetrieval:
+    def __init__(self):
+        self.index = {}
+        self.documents_matrix = None
 
     def index_document(self, doc_id, text):
         terms = text.lower().split()
@@ -62,7 +64,45 @@ The Boolean model in Information Retrieval (IR) is a fundamental model used for 
         print(list(self.index.keys()))
 
     def boolean_search(self, query):
-        # TYPE YOUR CODE HERE
+        # Normalize query by converting to lowercase and split by logical operators
+        query = query.lower()
+        terms = query.split()
+        
+        # Initialize results with all documents
+        results = set(range(1, len(self.documents_matrix) + 1))
+        
+        # Process AND, OR, and NOT
+        operators = ['and', 'or', 'not']
+        
+        # Handle terms with operators
+        query_terms = []
+        query_operators = []
+
+        for term in terms:
+            if term in operators:
+                query_operators.append(term)
+            else:
+                query_terms.append(term)
+        
+        # Process query for 'AND' operation
+        if 'and' in query_operators:
+            for term in query_terms:
+                if term in self.index:
+                    results = results.intersection(self.index[term])
+        
+        # Process query for 'OR' operation
+        elif 'or' in query_operators:
+            for term in query_terms:
+                if term in self.index:
+                    results = results.union(self.index[term])
+        
+        # Process query for 'NOT' operation
+        elif 'not' in query_operators:
+            for term in query_terms:
+                if term in self.index:
+                    results = results.difference(self.index[term])
+        
+        return results
 
 if __name__ == "__main__":
     indexer = BooleanRetrieval()
@@ -86,8 +126,11 @@ if __name__ == "__main__":
         print(f"Results for '{query}': {results}")
     else:
         print("No results found for the query.")
-
+    
+```
 
 ### Output:
+<img width="1019" height="266" alt="image" src="https://github.com/user-attachments/assets/0c62b4be-6656-44a1-aec8-6dd792b579d8" />
 
 ### Result:
+Implementation of Information Retrieval using Boolean Model in Python is successfully completed
